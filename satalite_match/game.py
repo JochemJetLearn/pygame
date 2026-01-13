@@ -30,6 +30,9 @@ def draw():
     if end_time != False:
         total = end_time - start_time
         screen.draw.text(f"Run completed in {round(total, 2)} seconds!", (25, 25), color="white")
+    else:
+        total = time.time() - start_time
+        screen.draw.text(f"Sattalite {clicked_num+1}, Time: {round(total, 2)}", (25, 25), color="white")
 
 def on_mouse_down(pos):
     global clicked_num, lines, end_time
@@ -47,3 +50,4 @@ def on_mouse_down(pos):
 create_sattalites()
 
 pgzrun.go()
+
