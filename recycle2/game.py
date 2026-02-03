@@ -15,6 +15,8 @@ game_complete = False
 current_level = 1
 final_level = 6
 
+score = 0
+
 start_speed = final_level*2+1
 
 def get_options_to_create(item_num): # places all items in level into list
@@ -50,9 +52,10 @@ def handle_game_over():
     global game_over
     game_over = True
 
-def handle_game_complete():
-    global current_level, items, animations, game_complete
+def handle_game_complete(paperbag):
+    global current_level, items, animations, game_complete, score
     stop_animations(animations)
+    score += HEIGHT - paperbag.y
     if current_level == final_level:
         game_complete = True
     else:
@@ -79,13 +82,14 @@ def update(): # checks if there are no items left
         items = make_items(current_level)
 
 def draw():
-    global plastic, items, game_over, game_complete
+    global plastic, items, game_over, game_complete, score
     screen.clear()
     screen.blit("background.png", (0, 0))
+    screen.draw.text(f"Score: {round(score)}", (10, 10), color="black")
     if game_over:
-        screen.draw.text("GAME OVER!!111!!11!", (WIDTH/4, HEIGHT/4), color="red", fontsize=100)
+        screen.draw.text("GAME OVER!!111!!11!", (WIDTH/2, HEIGHT/2), color="red", fontsize=100)
     elif game_complete:
-        screen.draw.text("YOU WIN!", (WIDTH/4, HEIGHT/4), color="black", fontsize=100)
+        screen.draw.text("YOU WIN!", (WIDTH/2, HEIGHT/2), color="black", fontsize=100)
     else:
         for i in items:
             i.draw()
@@ -95,7 +99,7 @@ def on_mouse_down(pos):
     for i in items:
         if i.collidepoint(pos):
             if "paper_bag.png" in i.image:
-                handle_game_complete()
+                handle_game_complete(i)
             else:
                 handle_game_over()
 
